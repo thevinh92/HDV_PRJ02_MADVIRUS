@@ -4,6 +4,8 @@ using WaveEngine.Common;
 using WaveEngine.Common.Graphics;
 using WaveEngine.Framework;
 using WaveEngine.Framework.Services;
+
+using HDV.MadVirus.Scenes;
 #endregion
 
 namespace HDV.MadVirus
@@ -18,7 +20,7 @@ namespace HDV.MadVirus
             ViewportManager vm = WaveServices.ViewportManager;
             vm.Activate(1280, 720, ViewportManager.StretchMode.Uniform);
 
-            ScreenContext screenContext = new ScreenContext(new MyScene());
+            ScreenContext screenContext = new ScreenContext(new GamePlayScene());
             WaveServices.ScreenContextManager.To(screenContext);
         }
     }

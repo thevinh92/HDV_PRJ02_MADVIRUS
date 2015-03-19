@@ -50,7 +50,9 @@
     <Compile Include="Game.cs" />
     <Compile Include="Localization\LocalizedStrings.cs" />
     <Compile Include="Models\PlayerInfo.cs" />
+    <Compile Include="Models\VirusButtonBehavior.cs" />
     <Compile Include="MyScene.cs" />
+    <Compile Include="Scenes\GamePlayScene.cs" />
     <Compile Include="Scenes\SplashScene.cs" />
   </ItemGroup>
   <ItemGroup>
