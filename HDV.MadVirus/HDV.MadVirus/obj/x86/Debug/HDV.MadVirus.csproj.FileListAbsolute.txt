@@ -41,6 +41,7 @@ D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirus\bin\x86\Debug\Fars
 D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirus\obj\x86\Debug\HDV.MadVirus.exe
 D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirus\obj\x86\Debug\HDV.MadVirus.pdb
 C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirus\obj\x86\Debug\HDV.MadVirus.exe
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirus\obj\x86\Debug\HDV.MadVirus.csprojResolveAssemblyReference.cache
 C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirus\obj\x86\Debug\HDV.MadVirus.pdb
 C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirus\bin\x86\Debug\HDV.MadVirus.exe
 C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirus\bin\x86\Debug\HDV.MadVirus.pdb
@@ -81,4 +82,5 @@ C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.M
 C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirus\bin\x86\Debug\WaveEngine.Materials.xml
 C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirus\bin\x86\Debug\Bepu.xml
 C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirus\bin\x86\Debug\FarseerPhysics.xml
-C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirus\obj\x86\Debug\HDV.MadVirus.csprojResolveAssemblyReference.cache
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirus\bin\x86\Debug\Newtonsoft.Json.dll
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirus\bin\x86\Debug\Newtonsoft.Json.xml
