@@ -33,6 +33,10 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="WaveEngine.Common" />
     <Reference Include="WaveEngine.Framework" />
     <Reference Include="WaveEngine.Components" />
@@ -49,13 +53,17 @@
     <Compile Include="Constants\Configuration.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Localization\LocalizedStrings.cs" />
+    <Compile Include="Models\MadVirusStorageClass.cs" />
     <Compile Include="Models\PlayerInfo.cs" />
+    <Compile Include="Models\StorageBtnBehavior.cs" />
+    <Compile Include="Models\StorageButtonBehavior.cs" />
     <Compile Include="Models\VirusButtonBehavior.cs" />
     <Compile Include="MyScene.cs" />
     <Compile Include="Scenes\GamePlayScene.cs" />
     <Compile Include="Scenes\SplashScene.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources.weproj" />
   </ItemGroup>
   <ItemGroup>

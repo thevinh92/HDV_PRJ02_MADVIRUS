@@ -22,6 +22,8 @@ using WaveEngine.Framework.UI;
 
 using HDV.MadVirus.Models;
 using HDV.MadVirus.Constants;
+
+using Newtonsoft.Json;
 #endregion
 
 namespace HDV.MadVirus.Scenes
@@ -57,8 +59,10 @@ namespace HDV.MadVirus.Scenes
         private int seletedColor;
         private int row_height;
         private int column_width;
+        private int moves;
 
-        private Entity mapBackground;
+        private Entity mapBackgroundEntity;
+        private Entity mapBackgroundSprite;
         private Entity buttonBackground;
 
         protected override void CreateScene()
@@ -71,10 +75,6 @@ namespace HDV.MadVirus.Scenes
 
             // Create the virus button for user to interative
             this.CreateVirusButton();
-
-            // Test
-            List<VirusCoord> list = this.FindNeighbor(5, 6);
-            this.PrintListCoord(list);
         }
         protected override void Start()
         {
@@ -84,8 +84,9 @@ namespace HDV.MadVirus.Scenes
 
         private void InitVirusMap()
         {
-            row_height = 8;
-            column_width = 15;
+            row_height = 16;
+            column_width = 29;
+            moves = 0;
             virusIndexArray = this.generateRandomMap(row_height, column_width, 1);
             // Add starPos to selectVirus
             selectedVirusList = new List<VirusCoord>();
@@ -93,23 +94,42 @@ namespace HDV.MadVirus.Scenes
 
             this.print2DArray(virusIndexArray);
 
-            // Create virus map background
-            // Use the mapBackground to AddChild all the virus
-            // When scale or move, all the virus scale and move too
-            this.mapBackground = new Entity("mapBackground")
+            // Create Virus map Background
+            mapBackgroundSprite = new Entity("mapBackgroundSprite")
             .AddComponent(new Transform2D()
             {
-                X = 200,
-                Y = 100,
-                //Scale = new Vector2(1.5f, 1.5f)
+                X = 160,
+                Y = 50,
+                Scale = new Vector2(1.0f, 1.0f)
             })
             .AddComponent(new Sprite("Content/mapBackground.wpk"))
             .AddComponent(new SpriteRenderer(DefaultLayers.Opaque))
             ;
-            EntityManager.Add(mapBackground);
+            EntityManager.Add(mapBackgroundSprite);
+
+            // Create virus map Entity
+            // Use The invisible Entity to AddChild all the virus
+            // When scale or move, all the virus scale and move too
+            this.mapBackgroundEntity = new Entity("mapBackgroundEntity")
+            .AddComponent(new Transform2D()
+            {
+                X = 0,
+                Y = 0,
+                Scale = new Vector2(0.5f, 0.5f)
+            })
+            ;
+            EntityManager.Add(mapBackgroundEntity);
+            // add background entity to background sprite
+            mapBackgroundSprite.AddChild(mapBackgroundEntity);
+
+            //Start draw virus from this coordinate
+            Transform2D startPoint = new Transform2D();
+            startPoint.X = 10;
+            startPoint.Y = 10;
             // after generate an array of virus index
             // create the sprite of virus and add to entity manager
-            this.CreateVirusMap(virusIndexArray);
+            this.CreateVirusMap(virusIndexArray, startPoint);
+
         }
 
         private void CreateCamera()
@@ -139,36 +159,18 @@ namespace HDV.MadVirus.Scenes
             EntityManager.Add(camera);
         }
 
-        private void CreateVirusMap(int[,] arr)
+        private void CreateVirusMap(int[,] arr, Transform2D startPoint)
         {
 
             System.Console.WriteLine("row count: {0}", arr.GetLength(0));
             System.Console.WriteLine("Column count: {0}", arr.GetLength(1));
-            Transform2D sampleTrans = new Transform2D();// by default: X = 0, Y = 0, top-left conner
+            Transform2D sampleTrans = new Transform2D();
             for (int i = 0; i < arr.GetLength(0); i++)
             {
                 for (int j = 0; j < arr.GetLength(1); j++)
                 {
-                    //this.CreateVirus(i, j, arr[i, j]);
                     if(arr[i,j] != 0)
-                        mapBackground.AddChild(this.CreateVirus(i, j, arr[i, j]));
-                    //switch (arr[i,j]) 
-                    //{
-                    //    case Configuration.BLUE_VIRUS_ID:
-                    //        break;
-                    //    case Configuration.GREEN_VIRUS_ID:
-                    //        break;
-                    //    case Configuration.MAGENTA_VIRUS_ID:
-                    //        break;
-                    //    case Configuration.ORANGE_VIRUS_ID:
-                    //        break;
-                    //    case Configuration.RED_VIRUS_ID:
-                    //        break;
-                    //    case Configuration.YELLOW_VIRUS_ID:
-                    //        break;
-                    //    default:
-                    //        break;
-                    //}
+                        mapBackgroundEntity.AddChild(this.CreateVirus(i, j, arr[i, j],startPoint));
                 }
             }
         }
@@ -219,16 +221,18 @@ namespace HDV.MadVirus.Scenes
         }
 
         // Create new Virus and Draw (add to EntityManager)
-        private Entity CreateVirus(int row, int collumn, int color)
+        private Entity CreateVirus(int row, int collumn, int color, Transform2D startPoint)
         {
+            var startX = startPoint.X;
+            var startY = startPoint.Y;
             if (color != 0)
             {
                 String spriteName = "Content/Virus/virus_" + color.ToString() + ".wpk";
-                Entity virus = new Entity("virus" + row.ToString() + collumn.ToString())
+                Entity virus = new Entity("virus" + (row*10).ToString() + collumn.ToString())
                  .AddComponent(new Transform2D()
                  {
-                     X = collumn * Configuration.VIRUS_SPRITE_WIDTH * 3 / 4, // Don't ask why, I just found the formula
-                     Y = row * Configuration.VIRUS_SPRITE_HEIGHT + (collumn % 2) * 74 / 2 //  Don't ask why, I just found the formula
+                     X = startX + collumn * Configuration.VIRUS_SPRITE_WIDTH * 3 / 4, // Don't ask why, I just found the formula
+                     Y = startY + row * Configuration.VIRUS_SPRITE_HEIGHT + (collumn % 2) * 74 / 2 //  Don't ask why, I just found the formula
                  })
                 .AddComponent(new Sprite(spriteName))
                 .AddComponent(new SpriteRenderer(DefaultLayers.Alpha))
@@ -236,7 +240,7 @@ namespace HDV.MadVirus.Scenes
                 EntityManager.Add(virus);
                 virusEntityArray[row, collumn] = virus;
 
-                this.PrintVirusCoordAndId(row, collumn, color);
+                //this.PrintVirusCoordAndId(row, collumn, color);
                 return virus;
 
             }
@@ -278,8 +282,8 @@ namespace HDV.MadVirus.Scenes
                 .AddComponent(new Transform2D()
                 {
                     X = 0,
-                    Y = Configuration.VIRUS_SPRITE_HEIGHT * (i) * 4 / 3,
-                    Scale = new Vector2(1.2f, 1.2f)
+                    Y = Configuration.VIRUS_SPRITE_HEIGHT * (i),
+                    Scale = new Vector2(1.0f, 1.0f)
                 })
                 .AddComponent(new Sprite(spriteName))
                 .AddComponent(new SpriteRenderer(DefaultLayers.Alpha))
@@ -295,6 +299,48 @@ namespace HDV.MadVirus.Scenes
                 var virusButtonBehavior = virusButton.FindComponent<VirusButtonBehavior>();
                 virusButtonBehavior.click += this.PlayWithColor;
             }
+
+            // Test Save map
+            Entity virusButtonSave = new Entity("virusButtonSave")
+            .AddComponent(new Transform2D()
+            {
+                X = 0,
+                Y = Configuration.VIRUS_SPRITE_HEIGHT * 6,
+                Scale = new Vector2(1.0f, 1.0f)
+            })
+            .AddComponent(new Sprite("Content/Virus/virus_-1.wpk"))
+            .AddComponent(new SpriteRenderer(DefaultLayers.Alpha))
+            .AddComponent(new RectangleCollider())
+            .AddComponent(new TouchGestures()
+            {
+                EnabledGestures = SupportedGesture.Translation
+            })
+            .AddComponent(new StorageButtonBehavior())
+            ;
+            var storageBtnBehav = virusButtonSave.FindComponent<StorageButtonBehavior>();
+            storageBtnBehav.clickSave += SavePlayerPref;
+            buttonBackground.AddChild(virusButtonSave);
+
+            // Test Load map
+            Entity virusButtonLoad = new Entity("virusButtonLoad")
+            .AddComponent(new Transform2D()
+            {
+                X = 0,
+                Y = Configuration.VIRUS_SPRITE_HEIGHT * 7,
+                Scale = new Vector2(1.0f, 1.0f)
+            })
+            .AddComponent(new Sprite("Content/Virus/virus_-2.wpk"))
+            .AddComponent(new SpriteRenderer(DefaultLayers.Alpha))
+            .AddComponent(new RectangleCollider())
+            .AddComponent(new TouchGestures()
+            {
+                EnabledGestures = SupportedGesture.Translation
+            })
+            .AddComponent(new StorageBtnBehavior())
+            ;
+            var storage = virusButtonLoad.FindComponent<StorageBtnBehavior>();
+            storage.clickLoad += LoadPlayerPref;
+            buttonBackground.AddChild(virusButtonLoad);
         }
 
         /// <summary>
@@ -346,10 +392,12 @@ namespace HDV.MadVirus.Scenes
 
         private void PlayWithColor(int color)
         {
-            System.Console.WriteLine(color.ToString());
+            //System.Console.WriteLine(color.ToString());
+            moves++;
             this.seletedColor = color;
-            //  iterate through the selectedVirus
+            System.Console.WriteLine("{0}, {1}", color, moves);
 
+            //  iterate through the selectedVirus
             this.IteratingVirusListWithColor(color, selectedVirusList);
 
             // Update the sprite of virus
@@ -367,9 +415,10 @@ namespace HDV.MadVirus.Scenes
 
         private void IteratingVirusListWithColor(int color, List<VirusCoord> listVirus)
         {
+            // List of Virus will be check in next loop
             List<VirusCoord> tempSelectedVirusList = new List<VirusCoord>();
 
-            // virus that all it's neighbor is selected will not use to find
+            // List of Virus (that all it's neighbor is selected) will not use to find
             List<VirusCoord> listVirusWillDeleteFromSelected = new List<VirusCoord>();
             foreach (var item in listVirus)
             {
@@ -413,6 +462,39 @@ namespace HDV.MadVirus.Scenes
             }
         }
 
+        private void SavePlayerPref()
+        {
+            MadVirusStorageClass storage = new MadVirusStorageClass();
+            storage.level = 10;
+            storage.moves = this.moves;
+            storage.score = 4000;
+            storage.curentColor = this.seletedColor;
+            storage.virusIndexArray = this.virusIndexArray;
+
+            string json = JsonConvert.SerializeObject(storage);
+            Console.WriteLine(json);
+            //WaveServices.Storage.Write<MadVirusStorageClass>(storage);
+            using(var stream = WaveServices.Storage.OpenStorageFile("myFile", WaveEngine.Common.IO.FileMode.OpenOrCreate))
+            {
+                var sw = new System.IO.StreamWriter(stream);
+                sw.WriteLine(json);
+                sw.Close();
+            }
+        }
+
+        private void LoadPlayerPref()
+        {
+            MadVirusStorageClass storage = new MadVirusStorageClass();
+            string json = "";
+            using(var stream = WaveServices.Storage.OpenStorageFile("myFile", WaveEngine.Common.IO.FileMode.Open))
+            {
+                var sr = new System.IO.StreamReader(stream);
+                json = sr.ReadLine();
+                Console.WriteLine(json);
+            }
+            storage = JsonConvert.DeserializeObject<MadVirusStorageClass>(json);
+        }
+
         #region Debug
         private void print2DArray(int[,] arr)
         {
@@ -441,8 +523,8 @@ namespace HDV.MadVirus.Scenes
                 Text = r.ToString() + q.ToString() + id.ToString(),
                 Width = Configuration.VIRUS_SPRITE_WIDTH,
                 Foreground = Color.White,
-                Margin = new Thickness(q * Configuration.VIRUS_SPRITE_WIDTH * 3 / 4 + 20 + 200,
-                    r * Configuration.VIRUS_SPRITE_HEIGHT + (q % 2) * 74 / 2 + 20 + 100,
+                Margin = new Thickness(q * Configuration.VIRUS_SPRITE_WIDTH * 3 / 4 + 20 + 160 + 10,
+                    r * Configuration.VIRUS_SPRITE_HEIGHT + (q % 2) * 74 / 2 + 20 + 50 + 10,
                     0, 0)
             };
             EntityManager.Add(title);
