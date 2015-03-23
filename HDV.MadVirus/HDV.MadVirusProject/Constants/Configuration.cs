@@ -24,5 +24,7 @@ namespace HDV.MadVirus.Constants
         public const int ORANGE_VIRUS_ID = 3;
         public const int RED_VIRUS_ID = 6;
         public const int YELLOW_VIRUS_ID = 5;
+
+        public const int MAX_VIRUS_TYPES = 6;
     }
 }

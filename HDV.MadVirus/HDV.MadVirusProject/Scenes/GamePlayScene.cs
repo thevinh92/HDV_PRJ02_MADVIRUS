@@ -60,11 +60,22 @@ namespace HDV.MadVirus.Scenes
         private int row_height;
         private int column_width;
         private int moves;
+        private int level; // tương đương với level là số lượng màu sắc của virus
+        private int colorTypeCount;
 
         private Entity mapBackgroundEntity;
         private Entity mapBackgroundSprite;
         private Entity buttonBackground;
 
+        public GamePlayScene()
+        {
+
+        }
+
+        public GamePlayScene(int level)
+        {
+
+        }
         protected override void CreateScene()
         {
             //Insert your scene definition here.
@@ -186,7 +197,7 @@ namespace HDV.MadVirus.Scenes
                 for (int j = 0; j < q; j++)
                 {
 
-                    arrayMap[i, j] = rnd.Next(6);
+                    arrayMap[i, j] = rnd.Next(Configuration.MAX_VIRUS_TYPES);
                 }
             }
 
@@ -213,7 +224,7 @@ namespace HDV.MadVirus.Scenes
             for (int i = 0; i < startPosCount; i++)
             {
                 System.Random rnd2 = new System.Random();
-                int temp = -rnd2.Next(1,6);
+                int temp = -rnd2.Next(1, Configuration.MAX_VIRUS_TYPES);
                 arrayMap[startPos[i].R, startPos[i].Q] = temp;
             }
 
@@ -275,7 +286,7 @@ namespace HDV.MadVirus.Scenes
             .AddComponent(new SpriteRenderer(DefaultLayers.Opaque))
             ;
             EntityManager.Add(buttonBackground);
-            for (int i = 0; i < 6; i++)
+            for (int i = 0; i < Configuration.MAX_VIRUS_TYPES; i++)
             {
                 String spriteName = "Content/Virus/virus_" + (i + 1).ToString() + ".wpk";
                 Entity virusButton = new Entity("virusButton" + (i + 1).ToString())
