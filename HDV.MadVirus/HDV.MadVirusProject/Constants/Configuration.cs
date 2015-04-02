@@ -11,7 +11,7 @@ namespace HDV.MadVirus.Constants
     /// </summary>
     public class Configuration
     {
-        public const string FacebookAppId = "";
+        public const string FacebookAppId = "431286293691374";
 
         // Virus Size
         public const float VIRUS_SPRITE_WIDTH = 84.0f;

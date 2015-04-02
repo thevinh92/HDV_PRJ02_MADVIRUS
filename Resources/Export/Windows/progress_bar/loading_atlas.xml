@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TextureAtlas imagePath="Content/progress_bar/loading_atlas.png" width="160" height="240">
+	<sprite n="loading" x="0" y="0" w="160" h="60" pX="0.5" pY="0.5"/>
+	<sprite n="loading" x="0" y="60" w="160" h="60" pX="0.5" pY="0.5"/>
+	<sprite n="loading" x="0" y="120" w="160" h="60" pX="0.5" pY="0.5"/>
+	<sprite n="loading" x="0" y="180" w="160" h="60" pX="0.5" pY="0.5"/>
+</TextureAtlas>
