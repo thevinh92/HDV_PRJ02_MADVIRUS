@@ -63,9 +63,9 @@ namespace HDV.MadVirus.Scenes
         private int level; // tương đương với level là số lượng màu sắc của virus
         private int colorTypeCount;
 
-        private Entity mapBackgroundEntity;
-        private Entity mapBackgroundSprite;
-        private Entity buttonBackground;
+        private Entity virusMapEntity;
+        private Entity gamePlayBackground;
+        private Entity sideBarBackground;
 
         public GamePlayScene()
         {
@@ -78,6 +78,19 @@ namespace HDV.MadVirus.Scenes
         }
         protected override void CreateScene()
         {
+            // Create Background
+            Entity backgound= new Entity("background")
+            .AddComponent(new Transform2D()
+            {
+                X = 0,
+                Y = 0,
+                Scale = new Vector2(1.0f, 1.0f),
+                DrawOrder = Configuration.BACKGROUND_DRAW_ORDER
+            })
+            .AddComponent(new Sprite("Content/background.wpk"))
+            .AddComponent(new SpriteRenderer(DefaultLayers.Opaque))
+            ;
+            EntityManager.Add(backgound);
             //Insert your scene definition here.
             this.CreateCamera();
 
@@ -105,38 +118,40 @@ namespace HDV.MadVirus.Scenes
 
             this.print2DArray(virusIndexArray);
 
-            // Create Virus map Background
-            mapBackgroundSprite = new Entity("mapBackgroundSprite")
-            .AddComponent(new Transform2D()
-            {
-                X = 160,
-                Y = 50,
-                Scale = new Vector2(1.0f, 1.0f)
-            })
-            .AddComponent(new Sprite("Content/mapBackground.wpk"))
-            .AddComponent(new SpriteRenderer(DefaultLayers.Opaque))
-            ;
-            EntityManager.Add(mapBackgroundSprite);
-
-            // Create virus map Entity
-            // Use The invisible Entity to AddChild all the virus
-            // When scale or move, all the virus scale and move too
-            this.mapBackgroundEntity = new Entity("mapBackgroundEntity")
+            // Create back ground gameplay
+            gamePlayBackground = new Entity("backgroundGamePlay")
             .AddComponent(new Transform2D()
             {
                 X = 0,
                 Y = 0,
-                Scale = new Vector2(0.5f, 0.5f)
+                Scale = new Vector2(1.0f, 1.0f),
+                DrawOrder = Configuration.FOREGROUND_DRAW_ORDER
+            })
+            .AddComponent(new Sprite("Content/background-gameplay.wpk"))
+            .AddComponent(new SpriteRenderer(DefaultLayers.Additive))
+            ;
+            EntityManager.Add(gamePlayBackground);
+
+            // Create virus map Entity
+            // Use The invisible Entity to AddChild all the virus
+            // When scale or move, all the virus scale and move too
+            this.virusMapEntity = new Entity("mapBackgroundEntity")
+            .AddComponent(new Transform2D()
+            {
+                X = Configuration.VIRUS_MAP_ENTITY_X,
+                Y = Configuration.VIRUS_MAP_ENTITY_Y,
+                Scale = new Vector2(1.0f, 1.0f)
             })
             ;
-            EntityManager.Add(mapBackgroundEntity);
-            // add background entity to background sprite
-            mapBackgroundSprite.AddChild(mapBackgroundEntity);
+            EntityManager.Add(virusMapEntity);
+            // add virus map entity to background gameplay
+            // When move the background gameplay, we can move all the virus
+            gamePlayBackground.AddChild(virusMapEntity);
 
             //Start draw virus from this coordinate
             Transform2D startPoint = new Transform2D();
-            startPoint.X = 10;
-            startPoint.Y = 10;
+            startPoint.X = Configuration.MARGIN_X;
+            startPoint.Y = Configuration.MARGIN_Y;
             // after generate an array of virus index
             // create the sprite of virus and add to entity manager
             this.CreateVirusMap(virusIndexArray, startPoint);
@@ -181,7 +196,7 @@ namespace HDV.MadVirus.Scenes
                 for (int j = 0; j < arr.GetLength(1); j++)
                 {
                     if(arr[i,j] != 0)
-                        mapBackgroundEntity.AddChild(this.CreateVirus(i, j, arr[i, j],startPoint));
+                        virusMapEntity.AddChild(this.CreateVirus(i, j, arr[i, j],startPoint));
                 }
             }
         }
@@ -238,12 +253,13 @@ namespace HDV.MadVirus.Scenes
             var startY = startPoint.Y;
             if (color != 0)
             {
-                String spriteName = "Content/Virus/virus_" + color.ToString() + ".wpk";
+                String spriteName = "Content/VirusSprite/virus_" + color.ToString() + ".wpk";
                 Entity virus = new Entity("virus" + (row*10).ToString() + collumn.ToString())
                  .AddComponent(new Transform2D()
                  {
                      X = startX + collumn * Configuration.VIRUS_SPRITE_WIDTH * 3 / 4, // Don't ask why, I just found the formula
-                     Y = startY + row * Configuration.VIRUS_SPRITE_HEIGHT + (collumn % 2) * 74 / 2 //  Don't ask why, I just found the formula
+                     Y = startY + row * Configuration.VIRUS_SPRITE_HEIGHT + (collumn % 2) * 74 / 2, //  Don't ask why, I just found the formula
+                     DrawOrder = Configuration.VIRUS_DRAW_ORDER
                  })
                 .AddComponent(new Sprite(spriteName))
                 .AddComponent(new SpriteRenderer(DefaultLayers.Alpha))
@@ -266,7 +282,7 @@ namespace HDV.MadVirus.Scenes
         /// <param name="color"></param>
         private void UpdateSpriteOfVirus(int row, int column, int color)
         {
-            String spriteName = "Content/Virus/virus_" + color.ToString() + ".wpk";
+            String spriteName = "Content/VirusSprite/virus_" + color.ToString() + ".wpk";
             Entity virus = virusEntityArray[row, column];
             virus.RemoveComponent<Sprite>();
             virus.RemoveComponent<SpriteRenderer>();
@@ -277,23 +293,23 @@ namespace HDV.MadVirus.Scenes
         // Show Button to choose virus color in mobile
         private void CreateVirusButton()
         {
-            buttonBackground = new Entity("buttonBackground")
+            sideBarBackground = new Entity("buttonBackground")
             .AddComponent(new Transform2D()
             {
 
             })
-            .AddComponent(new Sprite("Content/buttonBackground.wpk"))
-            .AddComponent(new SpriteRenderer(DefaultLayers.Opaque))
+            .AddComponent(new Sprite("Content/sidebar-background.wpk"))
+            .AddComponent(new SpriteRenderer(DefaultLayers.Additive))
             ;
-            EntityManager.Add(buttonBackground);
+            EntityManager.Add(sideBarBackground);
             for (int i = 0; i < Configuration.MAX_VIRUS_TYPES; i++)
             {
-                String spriteName = "Content/Virus/virus_" + (i + 1).ToString() + ".wpk";
+                String spriteName = "Content/VirusSprite/virus_" + (i + 1).ToString() + ".wpk";
                 Entity virusButton = new Entity("virusButton" + (i + 1).ToString())
                 .AddComponent(new Transform2D()
                 {
-                    X = 0,
-                    Y = Configuration.VIRUS_SPRITE_HEIGHT * (i),
+                    X = 35,
+                    Y = 42 + Configuration.VIRUS_SPRITE_HEIGHT * (i),
                     Scale = new Vector2(1.0f, 1.0f)
                 })
                 .AddComponent(new Sprite(spriteName))
@@ -305,7 +321,7 @@ namespace HDV.MadVirus.Scenes
                 })
                 .AddComponent(new VirusButtonBehavior(i + 1));
                 EntityManager.Add(virusButton);
-                buttonBackground.AddChild(virusButton);
+                sideBarBackground.AddChild(virusButton);
                 // Add event click
                 var virusButtonBehavior = virusButton.FindComponent<VirusButtonBehavior>();
                 virusButtonBehavior.click += this.PlayWithColor;
@@ -315,11 +331,11 @@ namespace HDV.MadVirus.Scenes
             Entity virusButtonSave = new Entity("virusButtonSave")
             .AddComponent(new Transform2D()
             {
-                X = 0,
-                Y = Configuration.VIRUS_SPRITE_HEIGHT * 6,
+                X = 35,
+                Y = 42 + Configuration.VIRUS_SPRITE_HEIGHT * 6,
                 Scale = new Vector2(1.0f, 1.0f)
             })
-            .AddComponent(new Sprite("Content/Virus/virus_-1.wpk"))
+            .AddComponent(new Sprite("Content/VirusSprite/virus_-1.wpk"))
             .AddComponent(new SpriteRenderer(DefaultLayers.Alpha))
             .AddComponent(new RectangleCollider())
             .AddComponent(new TouchGestures()
@@ -330,17 +346,17 @@ namespace HDV.MadVirus.Scenes
             ;
             var storageBtnBehav = virusButtonSave.FindComponent<StorageButtonBehavior>();
             storageBtnBehav.clickSave += SavePlayerPref;
-            buttonBackground.AddChild(virusButtonSave);
+            sideBarBackground.AddChild(virusButtonSave);
 
             // Test Load map
             Entity virusButtonLoad = new Entity("virusButtonLoad")
             .AddComponent(new Transform2D()
             {
-                X = 0,
-                Y = Configuration.VIRUS_SPRITE_HEIGHT * 7,
+                X = 35,
+                Y = 42 + Configuration.VIRUS_SPRITE_HEIGHT * 7,
                 Scale = new Vector2(1.0f, 1.0f)
             })
-            .AddComponent(new Sprite("Content/Virus/virus_-2.wpk"))
+            .AddComponent(new Sprite("Content/VirusSprite/virus_-2.wpk"))
             .AddComponent(new SpriteRenderer(DefaultLayers.Alpha))
             .AddComponent(new RectangleCollider())
             .AddComponent(new TouchGestures()
@@ -351,7 +367,7 @@ namespace HDV.MadVirus.Scenes
             ;
             var storage = virusButtonLoad.FindComponent<StorageBtnBehavior>();
             storage.clickLoad += LoadPlayerPref;
-            buttonBackground.AddChild(virusButtonLoad);
+            sideBarBackground.AddChild(virusButtonLoad);
         }
 
         /// <summary>
