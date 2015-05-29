@@ -22,8 +22,8 @@ namespace HDV.MadVirus
             
             ScreenContext screenContext = new ScreenContext(new SplashScene());
             vm.Activate(1280, 768, ViewportManager.StretchMode.Fill);
-
            // ScreenContext screenContext = new ScreenContext(new GamePlayScene());
+           // ScreenContext screenContext = new ScreenContext(new GamePlayScene(true));
             WaveServices.ScreenContextManager.To(screenContext);
         }
     }

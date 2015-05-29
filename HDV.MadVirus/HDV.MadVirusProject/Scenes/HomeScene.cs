@@ -198,6 +198,8 @@ namespace HDV.MadVirus.Scenes
             switch (itemId)
             {
                 case NewGameMenuItemId:
+                    // Modify code here
+                    // Input with a bool value
                     WaveServices.ScreenContextManager.Push(
                         new ScreenContext(new GamePlayScene()));
                     break;

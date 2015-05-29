@@ -60,12 +60,21 @@ namespace HDV.MadVirus.Scenes
         private int row_height;
         private int column_width;
         private int moves;
+        private float mapScale;
+        //private float mapScaleV;
         private int level; // tương đương với level là số lượng màu sắc của virus
         private int colorTypeCount;
 
         private Entity virusMapEntity;
         private Entity gamePlayBackground;
         private Entity sideBarBackground;
+        private Entity helpButton;
+        private Entity newGameButton;
+
+        private Entity panelBar;
+        private Entity turnPanel;
+        private Entity scorePanel;
+        private Entity levelPanel;
 
         public GamePlayScene()
         {
@@ -76,6 +85,14 @@ namespace HDV.MadVirus.Scenes
         {
 
         }
+
+        public GamePlayScene(bool isLoad)
+        {
+            if (isLoad)
+            {
+                this.LoadPlayerPref();
+            }
+        }
         protected override void CreateScene()
         {
             // Create Background
@@ -84,7 +101,6 @@ namespace HDV.MadVirus.Scenes
             {
                 X = 0,
                 Y = 0,
-                Scale = new Vector2(1.0f, 1.0f),
                 DrawOrder = Configuration.BACKGROUND_DRAW_ORDER
             })
             .AddComponent(new Sprite("Content/background.wpk"))
@@ -94,67 +110,19 @@ namespace HDV.MadVirus.Scenes
             //Insert your scene definition here.
             this.CreateCamera();
 
+            // Create Layout panel
+            this.CreateLayoutPanel();
             // Create virus map
-            this.InitVirusMap();
+            this.InitVirusMap(16, 29);
 
             // Create the virus button for user to interative
             this.CreateVirusButton();
+
+            // 
         }
         protected override void Start()
         {
             base.Start();
-
-        }
-
-        private void InitVirusMap()
-        {
-            row_height = 16;
-            column_width = 29;
-            moves = 0;
-            virusIndexArray = this.generateRandomMap(row_height, column_width, 1);
-            // Add starPos to selectVirus
-            selectedVirusList = new List<VirusCoord>();
-            selectedVirusList.Add(startPos[0]);
-
-            this.print2DArray(virusIndexArray);
-
-            // Create back ground gameplay
-            gamePlayBackground = new Entity("backgroundGamePlay")
-            .AddComponent(new Transform2D()
-            {
-                X = 0,
-                Y = 0,
-                Scale = new Vector2(1.0f, 1.0f),
-                DrawOrder = Configuration.FOREGROUND_DRAW_ORDER
-            })
-            .AddComponent(new Sprite("Content/background-gameplay.wpk"))
-            .AddComponent(new SpriteRenderer(DefaultLayers.Additive))
-            ;
-            EntityManager.Add(gamePlayBackground);
-
-            // Create virus map Entity
-            // Use The invisible Entity to AddChild all the virus
-            // When scale or move, all the virus scale and move too
-            this.virusMapEntity = new Entity("mapBackgroundEntity")
-            .AddComponent(new Transform2D()
-            {
-                X = Configuration.VIRUS_MAP_ENTITY_X,
-                Y = Configuration.VIRUS_MAP_ENTITY_Y,
-                Scale = new Vector2(1.0f, 1.0f)
-            })
-            ;
-            EntityManager.Add(virusMapEntity);
-            // add virus map entity to background gameplay
-            // When move the background gameplay, we can move all the virus
-            gamePlayBackground.AddChild(virusMapEntity);
-
-            //Start draw virus from this coordinate
-            Transform2D startPoint = new Transform2D();
-            startPoint.X = Configuration.MARGIN_X;
-            startPoint.Y = Configuration.MARGIN_Y;
-            // after generate an array of virus index
-            // create the sprite of virus and add to entity manager
-            this.CreateVirusMap(virusIndexArray, startPoint);
 
         }
 
@@ -185,6 +153,104 @@ namespace HDV.MadVirus.Scenes
             EntityManager.Add(camera);
         }
 
+        #region Layout
+        private void CreateLayoutPanel()
+        {
+            this.panelBar = new Entity("panelBar")
+                .AddComponent(new Transform2D()
+                {
+                    X = 155,
+                    Y = 0,
+                })
+                ;
+            EntityManager.Add(panelBar);
+            this.CreatePanel(turnPanel, "turnPanel", "Luot choi", "0", new Vector2(0,0));
+            this.CreatePanel(scorePanel, "scorePanel", "Diem so", "0", new Vector2(345,0));
+            this.CreatePanel(levelPanel, "levelPanel", "Level:", "1", new Vector2(690,0));
+            
+        }
+
+        private void CreatePanel(Entity entity, string name, string title, string value, Vector2 vector2)
+        {
+            entity = new Entity(name)
+            .AddComponent(new Transform2D()
+            {
+                X = vector2.X,
+                Y = vector2.Y,
+                DrawOrder = Configuration.VIRUS_DRAW_ORDER
+            })
+            .AddComponent(new Sprite("Content/panel/background-gameplay-3.wpk"))
+            .AddComponent(new TextControl("Content/fonts/tahoma.spr")
+            {
+                Margin = Thickness.Zero,
+                Text = title,
+                // HorizontalAlignment = HorizontalAlignment.Center,
+                // VerticalAlignment = VerticalAlignment.Center,
+                Foreground = new WaveEngine.Common.Graphics.Color("#00fce1")
+            })
+            .AddComponent(new TextControlRenderer())
+            .AddComponent(new SpriteRenderer(DefaultLayers.Alpha))
+            ;
+            entity.FindComponent<TextControl>().Transform2D = new Transform2D();
+            entity.FindComponent<TextControl>().Transform2D.X = 100;
+            entity.FindComponent<TextControl>().Transform2D.Y = 100;
+            panelBar.AddChild(entity);
+        }
+        #endregion
+
+        #region Init Virus Map
+        private void InitVirusMap(int row, int column)
+        {
+            row_height = row;
+            column_width = column;
+            moves = 0;
+            virusIndexArray = this.generateRandomMap(row_height, column_width, 1);
+            // Add starPos to selectVirus
+            selectedVirusList = new List<VirusCoord>();
+            selectedVirusList.Add(startPos[0]);
+
+            this.print2DArray(virusIndexArray);
+
+            // Create back ground gameplay
+            gamePlayBackground = new Entity("backgroundGamePlay")
+            .AddComponent(new Transform2D()
+            {
+                X = 0,
+                Y = 0,
+                Scale = new Vector2(1.0f, 1.0f),
+                DrawOrder = Configuration.FOREGROUND_DRAW_ORDER
+            })
+            .AddComponent(new Sprite("Content/background-gameplay.wpk"))
+            .AddComponent(new SpriteRenderer(DefaultLayers.Additive))
+            ;
+            EntityManager.Add(gamePlayBackground);
+
+            // Create virus map Entity
+            // Use The invisible Entity to AddChild all the virus
+            // When scale or move, all the virus scale and move too
+            float mapScaleH = Configuration.BACKGROUND_GAMEPLAY_WIDTH / ((column * 5 / 6) * Configuration.VIRUS_SPRITE_WIDTH);
+            float mapScaleV = Configuration.BACKGROUND_GAMEPLAY_HEIGHT / (row * Configuration.VIRUS_SPRITE_HEIGHT);
+            this.virusMapEntity = new Entity("mapBackgroundEntity")
+            .AddComponent(new Transform2D()
+            {
+                X = Configuration.VIRUS_MAP_ENTITY_X,
+                Y = Configuration.VIRUS_MAP_ENTITY_Y,
+                Scale = new Vector2(mapScaleH, mapScaleV)
+            })
+            ;
+            // add virus map entity to background gameplay
+            // When move the background gameplay, we can move all the virus
+            gamePlayBackground.AddChild(virusMapEntity);
+
+            //Start draw virus from this coordinate
+            Transform2D startPoint = new Transform2D();
+            startPoint.X = Configuration.MARGIN_X;
+            startPoint.Y = Configuration.MARGIN_Y;
+            // after generate an array of virus index
+            // create the sprite of virus and add to entity manager
+            this.CreateVirusMap(virusIndexArray, startPoint);
+
+        }
         private void CreateVirusMap(int[,] arr, Transform2D startPoint)
         {
 
@@ -258,13 +324,12 @@ namespace HDV.MadVirus.Scenes
                  .AddComponent(new Transform2D()
                  {
                      X = startX + collumn * Configuration.VIRUS_SPRITE_WIDTH * 3 / 4, // Don't ask why, I just found the formula
-                     Y = startY + row * Configuration.VIRUS_SPRITE_HEIGHT + (collumn % 2) * 74 / 2, //  Don't ask why, I just found the formula
+                     Y = startY + row * Configuration.VIRUS_SPRITE_HEIGHT + (collumn % 2) * Configuration.VIRUS_SPRITE_HEIGHT / 2, //  Don't ask why, I just found the formula
                      DrawOrder = Configuration.VIRUS_DRAW_ORDER
                  })
                 .AddComponent(new Sprite(spriteName))
                 .AddComponent(new SpriteRenderer(DefaultLayers.Alpha))
                 ;
-                EntityManager.Add(virus);
                 virusEntityArray[row, collumn] = virus;
 
                 //this.PrintVirusCoordAndId(row, collumn, color);
@@ -272,22 +337,6 @@ namespace HDV.MadVirus.Scenes
 
             }
             return null;
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="row"></param>
-        /// <param name="column"></param>
-        /// <param name="color"></param>
-        private void UpdateSpriteOfVirus(int row, int column, int color)
-        {
-            String spriteName = "Content/VirusSprite/virus_" + color.ToString() + ".wpk";
-            Entity virus = virusEntityArray[row, column];
-            virus.RemoveComponent<Sprite>();
-            virus.RemoveComponent<SpriteRenderer>();
-            virus.AddComponent(new Sprite(spriteName))
-                .AddComponent(new SpriteRenderer(DefaultLayers.Alpha));
         }
 
         // Show Button to choose virus color in mobile
@@ -326,50 +375,17 @@ namespace HDV.MadVirus.Scenes
                 var virusButtonBehavior = virusButton.FindComponent<VirusButtonBehavior>();
                 virusButtonBehavior.click += this.PlayWithColor;
             }
-
-            // Test Save map
-            Entity virusButtonSave = new Entity("virusButtonSave")
+            //this.TestSaveLoadButton();
+            helpButton = new Entity("helpButton")
             .AddComponent(new Transform2D()
             {
-                X = 35,
-                Y = 42 + Configuration.VIRUS_SPRITE_HEIGHT * 6,
-                Scale = new Vector2(1.0f, 1.0f)
-            })
-            .AddComponent(new Sprite("Content/VirusSprite/virus_-1.wpk"))
-            .AddComponent(new SpriteRenderer(DefaultLayers.Alpha))
-            .AddComponent(new RectangleCollider())
-            .AddComponent(new TouchGestures()
-            {
-                EnabledGestures = SupportedGesture.Translation
-            })
-            .AddComponent(new StorageButtonBehavior())
-            ;
-            var storageBtnBehav = virusButtonSave.FindComponent<StorageButtonBehavior>();
-            storageBtnBehav.clickSave += SavePlayerPref;
-            sideBarBackground.AddChild(virusButtonSave);
 
-            // Test Load map
-            Entity virusButtonLoad = new Entity("virusButtonLoad")
-            .AddComponent(new Transform2D()
-            {
-                X = 35,
-                Y = 42 + Configuration.VIRUS_SPRITE_HEIGHT * 7,
-                Scale = new Vector2(1.0f, 1.0f)
             })
-            .AddComponent(new Sprite("Content/VirusSprite/virus_-2.wpk"))
-            .AddComponent(new SpriteRenderer(DefaultLayers.Alpha))
-            .AddComponent(new RectangleCollider())
-            .AddComponent(new TouchGestures()
-            {
-                EnabledGestures = SupportedGesture.Translation
-            })
-            .AddComponent(new StorageBtnBehavior())
-            ;
-            var storage = virusButtonLoad.FindComponent<StorageBtnBehavior>();
-            storage.clickLoad += LoadPlayerPref;
-            sideBarBackground.AddChild(virusButtonLoad);
+            .AddComponent(new Sprite("Content/menus/icon-giup-do.wpk"))
         }
+        #endregion
 
+        #region Main Processor
         /// <summary>
         /// Find all the neighbors that valid and unseleted
         /// </summary>
@@ -489,6 +505,24 @@ namespace HDV.MadVirus.Scenes
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="column"></param>
+        /// <param name="color"></param>
+        private void UpdateSpriteOfVirus(int row, int column, int color)
+        {
+            String spriteName = "Content/VirusSprite/virus_" + color.ToString() + ".wpk";
+            Entity virus = virusEntityArray[row, column];
+            virus.RemoveComponent<Sprite>();
+            virus.RemoveComponent<SpriteRenderer>();
+            virus.AddComponent(new Sprite(spriteName))
+                .AddComponent(new SpriteRenderer(DefaultLayers.Alpha));
+        }
+        #endregion
+
+        #region Load&Save Map
         private void SavePlayerPref()
         {
             MadVirusStorageClass storage = new MadVirusStorageClass();
@@ -498,6 +532,7 @@ namespace HDV.MadVirus.Scenes
             storage.curentColor = this.seletedColor;
             storage.virusIndexArray = this.virusIndexArray;
 
+            
             string json = JsonConvert.SerializeObject(storage);
             Console.WriteLine(json);
             //WaveServices.Storage.Write<MadVirusStorageClass>(storage);
@@ -520,7 +555,139 @@ namespace HDV.MadVirus.Scenes
                 Console.WriteLine(json);
             }
             storage = JsonConvert.DeserializeObject<MadVirusStorageClass>(json);
+            this.level = storage.level;
+            this.moves = storage.moves;
+            this.seletedColor = storage.curentColor;
+            this.virusIndexArray = storage.virusIndexArray;
+            // Reset Virus map entity
+            int row = virusIndexArray.GetLength(0);
+            int column = virusIndexArray.GetLength(1);
+            virusEntityArray = new Entity[virusIndexArray.GetLength(0), virusIndexArray.GetLength(1)];
+            float mapScaleH = Configuration.BACKGROUND_GAMEPLAY_WIDTH / ((column * 5 / 6) * Configuration.VIRUS_SPRITE_WIDTH);
+            float mapScaleV = Configuration.BACKGROUND_GAMEPLAY_HEIGHT / (row * Configuration.VIRUS_SPRITE_HEIGHT);
+            gamePlayBackground.RemoveChild("mapBackgroundEntity");
+            this.virusMapEntity = new Entity("mapBackgroundEntity")
+            .AddComponent(new Transform2D()
+            {
+                X = Configuration.VIRUS_MAP_ENTITY_X,
+                Y = Configuration.VIRUS_MAP_ENTITY_Y,
+                Scale = new Vector2(mapScaleH, mapScaleV)
+            })
+            ;
+            // add virus map entity to background gameplay
+            // When move the background gameplay, we can move all the virus
+            gamePlayBackground.AddChild(virusMapEntity);
+            // Start draw virus from this coordinate
+            Transform2D startPoint = new Transform2D();
+            startPoint.X = Configuration.MARGIN_X;
+            startPoint.Y = Configuration.MARGIN_Y;
+            // after generate an array of virus index
+            // create the sprite of virus and add to entity manager
+            this.CreateVirusMapFromOldArray(virusIndexArray, startPoint, storage.curentColor);
+
         }
+
+        private void LoadOldGamePlay()
+        {
+            MadVirusStorageClass storage = new MadVirusStorageClass();
+            string json = "";
+            using (var stream = WaveServices.Storage.OpenStorageFile("myFile", WaveEngine.Common.IO.FileMode.Open))
+            {
+                var sr = new System.IO.StreamReader(stream);
+                json = sr.ReadLine();
+                Console.WriteLine(json);
+            }
+            storage = JsonConvert.DeserializeObject<MadVirusStorageClass>(json);
+            this.level = storage.level;
+            this.moves = storage.moves;
+            this.seletedColor = storage.curentColor;
+            this.virusIndexArray = storage.virusIndexArray;
+            // Reset Virus map entity
+            int row = virusIndexArray.GetLength(0);
+            int column = virusIndexArray.GetLength(1);
+            virusEntityArray = new Entity[virusIndexArray.GetLength(0), virusIndexArray.GetLength(1)];
+            float mapScaleH = Configuration.BACKGROUND_GAMEPLAY_WIDTH / ((column * 5 / 6) * Configuration.VIRUS_SPRITE_WIDTH);
+            float mapScaleV = Configuration.BACKGROUND_GAMEPLAY_HEIGHT / (row * Configuration.VIRUS_SPRITE_HEIGHT);
+            this.virusMapEntity = new Entity("mapBackgroundEntity")
+            .AddComponent(new Transform2D()
+            {
+                X = Configuration.VIRUS_MAP_ENTITY_X,
+                Y = Configuration.VIRUS_MAP_ENTITY_Y,
+                Scale = new Vector2(mapScaleH, mapScaleV)
+            })
+            ;
+            // add virus map entity to background gameplay
+            // When move the background gameplay, we can move all the virus
+            gamePlayBackground.AddChild(virusMapEntity);
+            // Start draw virus from this coordinate
+            Transform2D startPoint = new Transform2D();
+            startPoint.X = Configuration.MARGIN_X;
+            startPoint.Y = Configuration.MARGIN_Y;
+            // after generate an array of virus index
+            // create the sprite of virus and add to entity manager
+            this.CreateVirusMapFromOldArray(virusIndexArray, startPoint, storage.curentColor);
+        }
+
+        private void CreateVirusMapFromOldArray(int[,] arr, Transform2D startPoint, int selectedColor)
+        {
+            Transform2D sampleTrans = new Transform2D();
+            for (int i = 0; i < arr.GetLength(0); i++)
+            {
+                for (int j = 0; j < arr.GetLength(1); j++)
+                {
+                    if(arr[i,j] > 0)
+                        virusMapEntity.AddChild(this.CreateVirus(i, j, arr[i, j],startPoint));
+                    if(arr[i,j] < 0)
+                        virusMapEntity.AddChild(this.CreateVirus(i, j, -selectedColor, startPoint));
+                }
+            }
+        }
+
+        private void TestSaveLoadButton()
+        {
+            // Test Save map
+            Entity virusButtonSave = new Entity("virusButtonSave")
+            .AddComponent(new Transform2D()
+            {
+                X = 35,
+                Y = 42 + Configuration.VIRUS_SPRITE_HEIGHT * 6,
+                Scale = new Vector2(1.0f, 1.0f)
+            })
+            .AddComponent(new Sprite("Content/VirusSprite/virus_-1.wpk"))
+            .AddComponent(new SpriteRenderer(DefaultLayers.Alpha))
+            .AddComponent(new RectangleCollider())
+            .AddComponent(new TouchGestures()
+            {
+                EnabledGestures = SupportedGesture.Translation
+            })
+            .AddComponent(new StorageButtonBehavior())
+            ;
+            var storageBtnBehav = virusButtonSave.FindComponent<StorageButtonBehavior>();
+            storageBtnBehav.clickSave += SavePlayerPref;
+            sideBarBackground.AddChild(virusButtonSave);
+
+            // Test Load map
+            Entity virusButtonLoad = new Entity("virusButtonLoad")
+            .AddComponent(new Transform2D()
+            {
+                X = 35,
+                Y = 42 + Configuration.VIRUS_SPRITE_HEIGHT * 7,
+                Scale = new Vector2(1.0f, 1.0f)
+            })
+            .AddComponent(new Sprite("Content/VirusSprite/virus_-2.wpk"))
+            .AddComponent(new SpriteRenderer(DefaultLayers.Alpha))
+            .AddComponent(new RectangleCollider())
+            .AddComponent(new TouchGestures()
+            {
+                EnabledGestures = SupportedGesture.Translation
+            })
+            .AddComponent(new StorageBtnBehavior())
+            ;
+            var storage = virusButtonLoad.FindComponent<StorageBtnBehavior>();
+            storage.clickLoad += LoadPlayerPref;
+            sideBarBackground.AddChild(virusButtonLoad);
+        }
+        #endregion
 
         #region Debug
         private void print2DArray(int[,] arr)
