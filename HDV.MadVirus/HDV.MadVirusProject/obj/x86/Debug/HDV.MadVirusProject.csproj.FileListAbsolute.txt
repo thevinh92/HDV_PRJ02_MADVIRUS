@@ -1,0 +1,65 @@
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\HDV.MadVirusProject.dll
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\HDV.MadVirusProject.pdb
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Common.dll
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Components.dll
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Framework.dll
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Materials.dll
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Physics.dll
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\Zlib.Portable.dll
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\Bepu.dll
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\FarseerPhysics.dll
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Common.xml
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Framework.xml
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Components.xml
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Materials.xml
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Physics.xml
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\Bepu.xml
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\FarseerPhysics.xml
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\obj\x86\Debug\HDV.MadVirusProject.csprojResolveAssemblyReference.cache
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\obj\x86\Debug\HDV.MadVirusProject.dll
+D:\Workspace\HDV_PRJ02_MADVIRUS\src\HDV.MadVirus\HDV.MadVirusProject\obj\x86\Debug\HDV.MadVirusProject.pdb
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\HDV.MadVirusProject.dll
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\HDV.MadVirusProject.pdb
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Common.dll
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Components.dll
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Framework.dll
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Materials.dll
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Physics.dll
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\Zlib.Portable.dll
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\Bepu.dll
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\FarseerPhysics.dll
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Common.xml
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Framework.xml
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Components.xml
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Materials.xml
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Physics.xml
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\Bepu.xml
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\FarseerPhysics.xml
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\obj\x86\Debug\HDV.MadVirusProject.dll
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\obj\x86\Debug\HDV.MadVirusProject.pdb
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\obj\x86\Debug\HDV.MadVirusProject.csprojResolveAssemblyReference.cache
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\Newtonsoft.Json.dll
+C:\Users\VinhNhon\Documents\Visual Studio 2013\Projects\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\Newtonsoft.Json.xml
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\HDV.MadVirusProject.dll
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\HDV.MadVirusProject.pdb
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\Newtonsoft.Json.dll
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Common.dll
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Components.dll
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Framework.dll
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Materials.dll
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Physics.dll
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\Zlib.Portable.dll
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\Bepu.dll
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\FarseerPhysics.dll
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\Newtonsoft.Json.xml
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Common.xml
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Framework.xml
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Components.xml
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Materials.xml
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\WaveEngine.Physics.xml
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\Bepu.xml
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\FarseerPhysics.xml
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\obj\x86\Debug\HDV.MadVirusProject.dll
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\obj\x86\Debug\HDV.MadVirusProject.pdb
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\obj\x86\Debug\HDV.MadVirusProject.csprojResolveAssemblyReference.cache
+D:\Workspace\madvirus\HDV_PRJ02_MADVIRUS\HDV.MadVirus\HDV.MadVirusProject\bin\x86\Debug\HDV.FacebookSDK.Windows.dll

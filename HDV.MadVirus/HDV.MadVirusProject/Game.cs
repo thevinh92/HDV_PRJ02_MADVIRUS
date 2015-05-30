@@ -19,8 +19,8 @@ namespace HDV.MadVirus
             // ViewportManager is used to automatically adapt resolution to fit screen size
             ViewportManager vm = WaveServices.ViewportManager;
             vm.Activate(1280, 720, ViewportManager.StretchMode.Uniform);
-
-            ScreenContext screenContext = new ScreenContext(new GamePlayScene());
+            
+            ScreenContext screenContext = new ScreenContext(new SplashScene());
             WaveServices.ScreenContextManager.To(screenContext);
         }
     }

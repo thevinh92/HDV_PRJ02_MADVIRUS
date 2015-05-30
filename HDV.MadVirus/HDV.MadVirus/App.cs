@@ -21,10 +21,10 @@ namespace HDV.MadVirus
 
         public App()
         {
-            this.Width = 1280;
-            this.Height = 720;
+            this.Width = 1280 * 3 / 4;
+            this.Height = 720 * 3 / 4;
             this.FullScreen = false;
-            this.WindowTitle = "HDV.MadVirus";
+            this.WindowTitle = "MadVirus";
         }
 
         public override void Initialize()
