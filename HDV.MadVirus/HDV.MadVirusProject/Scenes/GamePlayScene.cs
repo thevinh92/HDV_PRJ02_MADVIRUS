@@ -192,7 +192,7 @@ namespace HDV.MadVirus.Scenes
                             LocalY = 54,
                             DrawOrder = -1
             })
-            .AddComponent(new FntTextControl("Content/fonts/main_menu_font.wpk", title)
+            .AddComponent(new FntTextControl("Content/fonts/play_menu_font.wpk", title)
             {
             })
             .AddComponent(new FntTextControlRenderer(DefaultLayers.Alpha));

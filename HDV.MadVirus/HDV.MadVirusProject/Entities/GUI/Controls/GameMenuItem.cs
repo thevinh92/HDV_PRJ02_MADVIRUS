@@ -12,6 +12,8 @@ using WaveEngine.Framework.Graphics;
 using WaveEngine.Framework.Physics2D;
 using WaveEngine.Framework.UI;
 
+using HDV.MadVirus.Entities.GUI;
+
 namespace HDV.MadVirus.Entities.GUI.Controls
 {
     public class GameMenuItem : BaseDecorator
@@ -29,18 +31,18 @@ namespace HDV.MadVirus.Entities.GUI.Controls
                 AddComponent(new Sprite("Content/game_menu_item_background.png")).
                 AddComponent(new SpriteRenderer(DefaultLayers.Alpha)).
                 AddComponent(new RectangleCollider()).
-                AddComponent(new TextControl("Content/fonts/tahoma.spr")
-                {
-                    Margin = Thickness.Zero,
-                    Text = title,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center,
-                    Foreground = new WaveEngine.Common.Graphics.Color("#00fce1")
-                }).
-                AddComponent(new TextControlRenderer()).
                 AddComponent(new TouchGestures());
 
+            Entity textEntity = new Entity()
+            .AddComponent(new Transform2D {
+                Origin = new WaveEngine.Common.Math.Vector2(0.5f, 0.5f)
+            })
+            .AddComponent(new FntTextControl("Content/fonts/main_menu_font.wpk", title)
+                {
+                })
+            .AddComponent(new FntTextControlRenderer(DefaultLayers.Alpha));
 
+            this.entity.AddChild(textEntity);
             //Touch
             var touchGestures = entity.FindComponent<TouchGestures>();
             touchGestures.TouchTap += OnTap;
