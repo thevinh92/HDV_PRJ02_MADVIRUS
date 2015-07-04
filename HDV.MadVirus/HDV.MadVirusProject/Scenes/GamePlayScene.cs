@@ -24,6 +24,7 @@ using HDV.MadVirus.Models;
 using HDV.MadVirus.Constants;
 
 using Newtonsoft.Json;
+using HDV.MadVirus.Entities.GUI;
 #endregion
 
 namespace HDV.MadVirus.Scenes
@@ -164,9 +165,9 @@ namespace HDV.MadVirus.Scenes
                 })
                 ;
             EntityManager.Add(panelBar);
-            this.CreatePanel(turnPanel, "turnPanel", "Luot choi", "0", new Vector2(0,0));
-            this.CreatePanel(scorePanel, "scorePanel", "Diem so", "0", new Vector2(345,0));
-            this.CreatePanel(levelPanel, "levelPanel", "Level:", "1", new Vector2(690,0));
+            this.CreatePanel(turnPanel, "turnPanel", "Lượt chơi: ", "0", new Vector2(0, 0));
+            this.CreatePanel(scorePanel, "scorePanel", "Điểm số: ", "0", new Vector2(345, 0));
+            this.CreatePanel(levelPanel, "levelPanel", "Cấp độ: ", "1", new Vector2(690, 0));
             
         }
 
@@ -180,20 +181,23 @@ namespace HDV.MadVirus.Scenes
                 DrawOrder = Configuration.VIRUS_DRAW_ORDER
             })
             .AddComponent(new Sprite("Content/panel/background-gameplay-3.wpk"))
-            .AddComponent(new TextControl("Content/fonts/tahoma.spr")
-            {
-                Margin = Thickness.Zero,
-                Text = title,
-                // HorizontalAlignment = HorizontalAlignment.Center,
-                // VerticalAlignment = VerticalAlignment.Center,
-                Foreground = new WaveEngine.Common.Graphics.Color("#00fce1")
-            })
-            .AddComponent(new TextControlRenderer())
             .AddComponent(new SpriteRenderer(DefaultLayers.Alpha))
             ;
-            entity.FindComponent<TextControl>().Transform2D = new Transform2D();
-            entity.FindComponent<TextControl>().Transform2D.X = 100;
-            entity.FindComponent<TextControl>().Transform2D.Y = 100;
+
+            Entity textEntity = new Entity()
+            .AddComponent(new Transform2D()
+             {
+                 Origin = new Vector2(0.0f, 0.5f),
+                            LocalX = 40,
+                            LocalY = 54,
+                            DrawOrder = -1
+            })
+            .AddComponent(new FntTextControl("Content/fonts/main_menu_font.wpk", title)
+            {
+            })
+            .AddComponent(new FntTextControlRenderer(DefaultLayers.Alpha));
+
+            entity.AddChild(textEntity);
             panelBar.AddChild(entity);
         }
         #endregion
@@ -278,7 +282,8 @@ namespace HDV.MadVirus.Scenes
                 for (int j = 0; j < q; j++)
                 {
 
-                    arrayMap[i, j] = rnd.Next(Configuration.MAX_VIRUS_TYPES);
+                    arrayMap[i, j] = rnd.Next(Configuration.MAX_VIRUS_TYPES + 1);
+
                 }
             }
 
@@ -382,6 +387,13 @@ namespace HDV.MadVirus.Scenes
 
             })
             .AddComponent(new Sprite("Content/menus/icon-giup-do.wpk"))
+            .AddComponent(new SpriteRenderer(DefaultLayers.Alpha))
+            .AddComponent(new RectangleCollider())
+            .AddComponent(new TouchGestures()
+            {
+                EnabledGestures = SupportedGesture.Translation
+            });
+
         }
         #endregion
 
