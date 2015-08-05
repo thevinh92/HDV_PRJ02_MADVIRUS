@@ -17,8 +17,8 @@ namespace HDV.MadVirus.Constants
         public const float VIRUS_SPRITE_WIDTH = 104.0f;
         public const float VIRUS_SPRITE_HEIGHT = 92.0f;
 
-        public const float BACKGROUND_GAMEPLAY_WIDTH = 1112.0f;
-        public const float BACKGROUND_GAMEPLAY_HEIGHT = 660.0f;
+        public const float BACKGROUND_GAMEPLAY_WIDTH = 1080.0f;
+        public const float BACKGROUND_GAMEPLAY_HEIGHT = 600.0f;
 
         // Vitus Type
         public const int BLUE_VIRUS_ID = 2;

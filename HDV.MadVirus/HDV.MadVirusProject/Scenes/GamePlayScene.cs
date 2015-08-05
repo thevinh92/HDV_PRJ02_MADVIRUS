@@ -65,6 +65,8 @@ namespace HDV.MadVirus.Scenes
         //private float mapScaleV;
         private int level; // tương đương với level là số lượng màu sắc của virus
         private int colorTypeCount;
+        private bool isWin = false;
+        private int virusCount;
 
         private Entity virusMapEntity;
         private Entity gamePlayBackground;
@@ -97,7 +99,7 @@ namespace HDV.MadVirus.Scenes
         protected override void CreateScene()
         {
             // Create Background
-            Entity backgound= new Entity("background")
+            Entity backgound = new Entity("background")
             .AddComponent(new Transform2D()
             {
                 X = 0,
@@ -114,7 +116,7 @@ namespace HDV.MadVirus.Scenes
             // Create Layout panel
             this.CreateLayoutPanel();
             // Create virus map
-            this.InitVirusMap(16, 29);
+            this.InitVirusMap(20, 40);
 
             // Create the virus button for user to interative
             this.CreateVirusButton();
@@ -168,7 +170,7 @@ namespace HDV.MadVirus.Scenes
             this.CreatePanel(turnPanel, "turnPanel", "Lượt chơi: ", "0", new Vector2(0, 0));
             this.CreatePanel(scorePanel, "scorePanel", "Điểm số: ", "0", new Vector2(345, 0));
             this.CreatePanel(levelPanel, "levelPanel", "Cấp độ: ", "1", new Vector2(690, 0));
-            
+
         }
 
         private void CreatePanel(Entity entity, string name, string title, string value, Vector2 vector2)
@@ -188,10 +190,10 @@ namespace HDV.MadVirus.Scenes
             .AddComponent(new Transform2D()
              {
                  Origin = new Vector2(0.0f, 0.5f),
-                            LocalX = 40,
-                            LocalY = 54,
-                            DrawOrder = -1
-            })
+                 LocalX = 40,
+                 LocalY = 54,
+                 DrawOrder = -1
+             })
             .AddComponent(new FntTextControl("Content/fonts/play_menu_font.wpk", title)
             {
             })
@@ -261,14 +263,19 @@ namespace HDV.MadVirus.Scenes
             System.Console.WriteLine("row count: {0}", arr.GetLength(0));
             System.Console.WriteLine("Column count: {0}", arr.GetLength(1));
             Transform2D sampleTrans = new Transform2D();
+            int k = 0;
             for (int i = 0; i < arr.GetLength(0); i++)
             {
                 for (int j = 0; j < arr.GetLength(1); j++)
                 {
-                    if(arr[i,j] != 0)
-                        virusMapEntity.AddChild(this.CreateVirus(i, j, arr[i, j],startPoint));
+                    if (arr[i, j] != 0)
+                    {
+                        virusMapEntity.AddChild(this.CreateVirus(i, j, arr[i, j], startPoint));
+                        k++;
+                    }
                 }
             }
+            virusCount = k;
         }
 
         private int[,] generateRandomMap(int r, int q, int startPosCount)
@@ -296,7 +303,7 @@ namespace HDV.MadVirus.Scenes
                     System.Random rndR = new System.Random();
                     System.Random rndQ = new System.Random();
                     int a = rndR.Next(r - 1);
-                    int b =  rndQ.Next(q - 1);
+                    int b = rndQ.Next(q - 1);
                     if (arrayMap[a, b] > 0)
                     {
                         VirusCoord virusCoord = new VirusCoord(a, b);
@@ -325,7 +332,7 @@ namespace HDV.MadVirus.Scenes
             if (color != 0)
             {
                 String spriteName = "Content/VirusSprite/virus_" + color.ToString() + ".wpk";
-                Entity virus = new Entity("virus" + (row*10).ToString() + collumn.ToString())
+                Entity virus = new Entity("virus" + (row * 10).ToString() + collumn.ToString())
                  .AddComponent(new Transform2D()
                  {
                      X = startX + collumn * Configuration.VIRUS_SPRITE_WIDTH * 3 / 4, // Don't ask why, I just found the formula
@@ -447,23 +454,33 @@ namespace HDV.MadVirus.Scenes
 
         private void PlayWithColor(int color)
         {
-            //System.Console.WriteLine(color.ToString());
-            moves++;
-            this.seletedColor = color;
-            System.Console.WriteLine("{0}, {1}", color, moves);
-
-            //  iterate through the selectedVirus
-            this.IteratingVirusListWithColor(color, selectedVirusList);
-
-            // Update the sprite of virus
-            for (int i = 0; i < virusIndexArray.GetLength(0); i++)
+            if (!isWin)
             {
-                for (int j = 0; j < virusIndexArray.GetLength(1); j++)
+                //System.Console.WriteLine(color.ToString());
+                moves++;
+                this.seletedColor = color;
+                System.Console.WriteLine("{0}, {1}", color, moves);
+
+                //  iterate through the selectedVirus
+                this.IteratingVirusListWithColor(color, selectedVirusList);
+
+                // Update the sprite of virus
+                int count = 0;
+                for (int i = 0; i < virusIndexArray.GetLength(0); i++)
                 {
-                    if (virusIndexArray[i, j] < 0)
+                    for (int j = 0; j < virusIndexArray.GetLength(1); j++)
                     {
-                        UpdateSpriteOfVirus(i, j, -color);
+                        if (virusIndexArray[i, j] < 0)
+                        {
+                            UpdateSpriteOfVirus(i, j, -color);
+                            count++;
+                        }
                     }
+                }
+
+                if (count == virusCount)
+                {
+                    isWin = true;
                 }
             }
         }
@@ -544,11 +561,11 @@ namespace HDV.MadVirus.Scenes
             storage.curentColor = this.seletedColor;
             storage.virusIndexArray = this.virusIndexArray;
 
-            
+
             string json = JsonConvert.SerializeObject(storage);
             Console.WriteLine(json);
             //WaveServices.Storage.Write<MadVirusStorageClass>(storage);
-            using(var stream = WaveServices.Storage.OpenStorageFile("myFile", WaveEngine.Common.IO.FileMode.OpenOrCreate))
+            using (var stream = WaveServices.Storage.OpenStorageFile("myFile", WaveEngine.Common.IO.FileMode.OpenOrCreate))
             {
                 var sw = new System.IO.StreamWriter(stream);
                 sw.WriteLine(json);
@@ -560,7 +577,7 @@ namespace HDV.MadVirus.Scenes
         {
             MadVirusStorageClass storage = new MadVirusStorageClass();
             string json = "";
-            using(var stream = WaveServices.Storage.OpenStorageFile("myFile", WaveEngine.Common.IO.FileMode.Open))
+            using (var stream = WaveServices.Storage.OpenStorageFile("myFile", WaveEngine.Common.IO.FileMode.Open))
             {
                 var sr = new System.IO.StreamReader(stream);
                 json = sr.ReadLine();
@@ -647,9 +664,9 @@ namespace HDV.MadVirus.Scenes
             {
                 for (int j = 0; j < arr.GetLength(1); j++)
                 {
-                    if(arr[i,j] > 0)
-                        virusMapEntity.AddChild(this.CreateVirus(i, j, arr[i, j],startPoint));
-                    if(arr[i,j] < 0)
+                    if (arr[i, j] > 0)
+                        virusMapEntity.AddChild(this.CreateVirus(i, j, arr[i, j], startPoint));
+                    if (arr[i, j] < 0)
                         virusMapEntity.AddChild(this.CreateVirus(i, j, -selectedColor, startPoint));
                 }
             }
